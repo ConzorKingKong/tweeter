@@ -19,5 +19,5 @@ export async function POST(request: NextRequest) {
     }
   })
 
-  return NextResponse.json({"created": "done"})
+  return NextResponse.json(comment)
 }
