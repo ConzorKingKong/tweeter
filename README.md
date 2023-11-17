@@ -13,7 +13,6 @@ npm run dev
 ## env variables
 
 DATABASE_URL=
-// http://localhost:3000 is default, but change in production
 NEXTAUTH_URL=http://localhost:3000
 HOSTNAME="http://localhost:3000"
 NEXT_PUBLIC_HOSTNAME="http://localhost:3000"
