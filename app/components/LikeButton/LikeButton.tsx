@@ -18,7 +18,7 @@ const LikeButton = (props: LikeProps) => {
     .then(res => {
       res.json()
       .then(data => {
-        if (data.id) {
+        if (data && data.id) {
           setStatus({likes: props.likes, liked: true})
         }
       })
