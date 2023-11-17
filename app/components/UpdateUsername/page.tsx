@@ -1,8 +1,10 @@
 'use client'
 import React from 'react'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 const UpdateUsername = () => {
+  const router = useRouter()
   const [show, changeShow] = useState(false)
   const [newUsername, changeNewUsername] = useState('')
 
@@ -26,6 +28,7 @@ const UpdateUsername = () => {
     })
     .then(res => {
       // redirect to new username page
+      router.push(`/${newUsername}`)
     })
   }
 
