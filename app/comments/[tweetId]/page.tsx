@@ -1,11 +1,12 @@
 'use client'
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation'
 import Tweet from '@/app/components/Tweets/Tweets'
 import { useSession } from 'next-auth/react'
+import { useRouter, usePathname } from 'next/navigation'
 
 const Comments = () => {
+  const router = useRouter()
   const [comment, updateComment] = useState("")
 
   const session = useSession()
@@ -14,7 +15,7 @@ const Comments = () => {
     updateComment(e.target.value)
   }
 
-  const [tweet, setTweet] = useState({Replies: []}) 
+  const [tweet, setTweet] = useState({data: {Replies: []}, render: false}) 
 
   const pathname = usePathname()
   const tweetId = pathname.split('/')[2]
@@ -25,7 +26,10 @@ const Comments = () => {
       method: "POST",
       body: JSON.stringify({content: comment, tweetId: tweetId})
     }).then(res => {
-      updateComment("")
+      res.json()
+      .then(data => {
+        router.push(`/comments/${data.id}`)
+      })
     })
   }
   
@@ -34,28 +38,38 @@ const Comments = () => {
     .then(res => {
       res.json()
       .then(data => {
-        setTweet(data)
+        if (data.id) {
+          setTweet({data: data, render: true})
+        } else {
+          setTweet({data: data, render: false})
+        }
       })
     })
   }, [])
 
-  return (
-    <div>
-      <Tweet tweet={tweet} />
-      {session.status === "authenticated" && <div>
-        <form
-        onSubmit={onSubmit}
-        className="flex"
-        >
-          <input className="text-white w-full" onChange={onChange} value={comment} placeholder='Comment'/>
-          <button className="self-end">Post</button>
-        </form>
-      </div>}
+  if (tweet.render) {
+    return (
       <div>
-        {tweet.Replies.map((comment, i) => {return (<Tweet key={i} tweet={comment} />)})}
+        <Tweet tweet={tweet.data} />
+        {session.status === "authenticated" && <div>
+          <form
+          onSubmit={onSubmit}
+          className="flex"
+          >
+            <input className="text-white w-full" onChange={onChange} value={comment} placeholder='Comment'/>
+            <button className="self-end">Post</button>
+          </form>
+        </div>}
+        <div>
+          {tweet.data.Replies.map((comment, i) => {return (<Tweet key={i} tweet={comment} />)})}
+        </div>
       </div>
-    </div>
-  )
+    )
+  } else {
+    return (
+      <p>Tweet does not exist</p>
+    )
+  }
 }
 
 export default Comments
