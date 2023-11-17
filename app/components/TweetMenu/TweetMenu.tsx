@@ -1,6 +1,6 @@
 import React from 'react'
-import { redirect } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { useRouter, usePathname } from 'next/navigation'
 
 interface TweetMenuProps {
   id: string,
@@ -8,13 +8,20 @@ interface TweetMenuProps {
 }
 
 const TweetMenu = (props: TweetMenuProps) => {
+  const router = useRouter()
+  const pathname = usePathname()
 
   const onClick = () => {
     fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/tweets`, {
       method: "delete",
       body: JSON.stringify({id: props.id})
     }).then(res => {
-      redirect("/home")
+      // how to handle this on homepage and tweet doesnt disappear
+      // on nextjs refresh. probably update state connected to this
+      // item and update the state and link it to a useEffect hook
+      // otherwise a parent tweet being deleted on the tweets page
+      // will have to redirect like this
+      router.push("/")
     })
   }
 
