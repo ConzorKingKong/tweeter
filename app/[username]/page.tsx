@@ -3,6 +3,7 @@ import Feed from '../components/Feed/Feed'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../api/auth/[...nextauth]/route'
 import UpdateUsername from '../components/UpdateUsername/page'
+import UserMenu from '../components/UserMenu/UserMenu'
 
 interface Props {
   params: {username: string}
@@ -33,6 +34,7 @@ const userPage = async ({ params: {username} }: Props) => {
             </div>
           </label>
             <p>{user.username}</p>
+            {renderEdit && <UserMenu /> }
           </div>
           {renderEdit && <UpdateUsername />}
         </div>
