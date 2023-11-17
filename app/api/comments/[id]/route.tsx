@@ -2,7 +2,7 @@ import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, params: any) {
-  const tweet = await prisma.tweets.findUnique({
+  let tweet = await prisma.tweets.findUnique({
     where: {
       id: params.params.id
     },
@@ -30,6 +30,10 @@ export async function GET(request: NextRequest, params: any) {
       }
     }
   })
+
+  if (tweet === null) {
+    tweet = {Replies: []}
+  }
 
   return NextResponse.json(tweet)
 }
