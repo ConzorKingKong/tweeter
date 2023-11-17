@@ -3,8 +3,11 @@ import React from 'react'
 import {useState, useEffect} from 'react'
 import { useSession } from 'next-auth/react'
 import Feed from './components/Feed/Feed'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function Home() {
+  const router = useRouter()
   const [postContent, setPostContent] = useState("")
 
   const [data, setData] = useState([])
@@ -30,8 +33,7 @@ export default function Home() {
       body: JSON.stringify({content: postContent})
     })
     const body = await call.json()
-    // redirect to comment page
-    // shouldn't be necessary when redirect is implimented
+    router.push(`/comments/${body.id}`)
     setPostContent("")
   }
 
@@ -39,11 +41,13 @@ export default function Home() {
     <div className="">
       {session.status === "authenticated" && <div>
         <div>
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
-              <img src={session.status !== "loading" ? session.data.session.user.image : "https://cdn.vectorstock.com/i/preview-1x/66/14/default-avatar-photo-placeholder-profile-picture-vector-21806614.jpg"} />
-            </div>
-          </label>
+          <Link href={`/${session.data.session.user.username}`}>
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <div className="w-10 rounded-full">
+                <img src={session.status !== "loading" ? session.data.session.user.image : "https://cdn.vectorstock.com/i/preview-1x/66/14/default-avatar-photo-placeholder-profile-picture-vector-21806614.jpg"} />
+              </div>
+            </label>
+          </Link>
         </div>
         <div>
           <form
