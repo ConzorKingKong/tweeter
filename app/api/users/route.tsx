@@ -26,3 +26,20 @@ export async function PUT(request: NextRequest) {
 
   return NextResponse.json(JSON.stringify(updateUsername))
 }
+
+export async function DELETE(request: NextRequest) {
+  const session = await getServerSession(authOptions)
+  
+  if (session === null) {
+    return NextResponse.json({})
+  }
+
+  const body = await request.json()
+  const deleteUser = await prisma.user.delete({
+    where: {
+      id: body.id
+    }
+  })
+
+  return NextResponse.json(deleteUser)
+}
