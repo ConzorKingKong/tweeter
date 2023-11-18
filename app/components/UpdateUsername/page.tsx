@@ -17,7 +17,7 @@ const UpdateUsername = () => {
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    changeNewUsername(e.target.value)
+    changeNewUsername(e.target.value.replace(/\s/g, ''))
   }
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -37,7 +37,7 @@ const UpdateUsername = () => {
   return (
     <div>
       {!show && <button onClick={showForm}>Edit username</button>}
-      {show && <form onSubmit={onSubmit}><input value={newUsername} onChange={onChange} placeholder='Enter new username'/></form>}
+      {show && <form onSubmit={onSubmit}><input value={newUsername} onChange={onChange} placeholder='Enter new username' /></form>}
       {show && <button onClick={hideForm}>Cancel</button>}
     </div>
   )
