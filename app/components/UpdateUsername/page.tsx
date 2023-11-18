@@ -37,7 +37,7 @@ const UpdateUsername = () => {
   return (
     <div>
       {!show && <button onClick={showForm}>Edit username</button>}
-      {show && <form onSubmit={onSubmit}><input value={newUsername} onChange={onChange} placeholder='Enter new username' /></form>}
+      {show && <form onSubmit={onSubmit}><input value={newUsername} onChange={onChange} placeholder='Enter new username'/></form>}
       {show && <button onClick={hideForm}>Cancel</button>}
     </div>
   )

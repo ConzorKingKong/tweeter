@@ -1,7 +1,13 @@
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest, params: any) {
+interface params {
+  params: {
+    id: string
+  }
+}
+
+export async function GET(request: NextRequest, params: params) {
   let tweet = await prisma.tweets.findUnique({
     where: {
       id: params.params.id
