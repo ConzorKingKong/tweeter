@@ -8,13 +8,15 @@ const UserMenu = () => {
   const session = useSession()
 
   const onClick = () => {
-    fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/users`, {
-      method: "delete",
-      body: JSON.stringify({id: session.data.session.user.id})
-    }).then(res => {
-      // double check that session is deleted properly
-      router.push("/")
-    })
+    if (session && session.data) {
+      fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/users`, {
+        method: "delete",
+        body: JSON.stringify({id: session.data.session.user.id})
+      }).then(res => {
+        // double check that session is deleted properly
+        router.push("/")
+      })
+    }
   }
 
 

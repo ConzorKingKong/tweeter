@@ -24,14 +24,16 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    session: async (session) => {
+    session: async (session: any) => {
       const dbUser: dbUser | null = await prisma.user.findUnique({
         where: {
           email: session.session.user.email
         }
       })
-      session.session.user.id = dbUser.id as string
-      session.session.user.username = dbUser.username as string
+      if (dbUser) {
+        session.session.user.id = dbUser.id
+        session.session.user.username = dbUser.username
+      }
       return session
     }
   },

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Tweet from '@/app/components/Tweets/Tweets'
 import { useSession } from 'next-auth/react'
 import { useRouter, usePathname } from 'next/navigation'
+import { TweetProps } from '@/app/components/Tweets/Tweets'
 
 const Comments = () => {
   const router = useRouter()
@@ -11,7 +12,7 @@ const Comments = () => {
 
   const session = useSession()
 
-  const onChange = (e) => {
+  const onChange = (e: any) => {
     updateComment(e.target.value)
   }
 
@@ -20,7 +21,7 @@ const Comments = () => {
   const pathname = usePathname()
   const tweetId = pathname.split('/')[2]
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: any) => {
     e.preventDefault()
     fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/comments`, {
       method: "POST",
@@ -37,11 +38,11 @@ const Comments = () => {
     fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/comments/${tweetId}`)
     .then(res => {
       res.json()
-      .then(data => {
-        if (data.id) {
+      .then((data: TweetProps | null) => {
+        if (data) {
           setTweet({data: data, render: true})
         } else {
-          setTweet({data: data, render: false})
+          setTweet({data: {Replies: []}, render: false})
         }
       })
     })
@@ -65,11 +66,11 @@ const Comments = () => {
         </div>
       </div>
     )
-  } else {
-    return (
-      <p>Tweet does not exist</p>
-    )
   }
+
+  return (
+    <p>Tweet does not exist</p>
+  )
 }
 
 export default Comments

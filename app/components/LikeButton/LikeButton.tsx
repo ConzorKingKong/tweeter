@@ -26,7 +26,7 @@ const LikeButton = (props: LikeProps) => {
   }, [])
 
 
-  const onClick = (e: React.HTMLProps<HTMLButtonElement>) => {
+  const onClick = (e: any) => {
     if (session.status !== "authenticated") return
     if (likeStatus.liked === false) {
       fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/like`, {

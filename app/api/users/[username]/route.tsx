@@ -26,15 +26,15 @@ export async function GET(request: NextRequest, params: any) {
     }
   })
 
-  if (user === null) {
-    user = {
-      image: "https://cdn.vectorstock.com/i/preview-1x/66/14/default-avatar-photo-placeholder-profile-picture-vector-21806614.jpg",
-      username: "user does not exist",
-      bio: "",
-      Tweets: []
-    }
+  if (user) {
+    return NextResponse.json(user)
   }
 
+  return NextResponse.json({
+    image: "https://cdn.vectorstock.com/i/preview-1x/66/14/default-avatar-photo-placeholder-profile-picture-vector-21806614.jpg",
+    username: "user does not exist",
+    bio: "",
+    Tweets: []
+  })
 
-  return NextResponse.json(user)
 }

@@ -1,7 +1,12 @@
 import React from 'react'
 import Link from 'next/link'
 
-const ProfileMenu = (props) => {
+interface props {
+  image: string,
+  href: string
+}
+
+const ProfileMenu = (props: props) => {
   return (
     <div className="dropdown dropdown-end">
       <label tabIndex={0} className="btn btn-ghost btn-circle avatar">

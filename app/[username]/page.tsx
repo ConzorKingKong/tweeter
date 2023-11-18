@@ -9,13 +9,21 @@ interface Props {
   params: {username: string}
 }
 
+interface session {
+  session: {
+    user: {
+      username: string
+    }
+  }
+}
+
 const userPage = async ({ params: {username} }: Props) => {
   const call = await fetch(`${process.env.HOSTNAME}/api/users/${username}`, {cache: 'no-store'})
   const user = await call.json()
 
   let renderEdit = false
 
-  const session = await getServerSession(authOptions)
+  const session: session | null = await getServerSession(authOptions)
 
   if (session === null) {
     renderEdit = false

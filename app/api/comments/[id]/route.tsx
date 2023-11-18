@@ -31,9 +31,5 @@ export async function GET(request: NextRequest, params: any) {
     }
   })
 
-  if (tweet === null) {
-    tweet = {Replies: []}
-  }
-
   return NextResponse.json(tweet)
 }

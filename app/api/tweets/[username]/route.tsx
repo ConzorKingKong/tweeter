@@ -24,8 +24,9 @@ export async function GET(request: NextRequest, params: any) {
       }
     }
   })
-  if (!tweets) {
-    tweets = {Tweets: []}
+  if (tweets) {
+    return NextResponse.json(tweets.Tweets)
   }
-  return NextResponse.json(tweets.Tweets)
+
+  return NextResponse.json({Tweets: []})
 }

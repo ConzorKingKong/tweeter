@@ -1,21 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import Tweet from '../Tweets/Tweets'
+import { TweetProps } from '../Tweets/Tweets'
 
 interface FeedProps {
-  data: [{
-    id: string,
-    content: string,
-    createdAt: Date,
-    creatorId: string,
-    parentTweetId: null | string,
-    User: {
-      image: string,
-      username: string
-    },
-    _count: {
-      Likes: number
-    }
-  }]
+  data: TweetProps[]
 }
 
 const Feed = (props: FeedProps) => {

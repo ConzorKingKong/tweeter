@@ -5,13 +5,13 @@ import Image from 'next/image'
 import LikeButton from '../LikeButton/LikeButton'
 import TweetMenu from '../TweetMenu/TweetMenu'
 
-interface TweetProps {
+export interface TweetProps {
   tweet: {
     id: string,
     content: string,
     createdAt: Date,
     creatorId: string,
-    parentTweetId: null | string,
+    parentTweetId: string | null | undefined,
     User: {
       image: string,
       username: string
@@ -19,10 +19,11 @@ interface TweetProps {
     _count: {
       Likes: number
     }
-  }
+  },
+  Replies: []
 }
 
-const Tweet = (props: TweetProps) => {
+const Tweet = (props: TweetProps | any) => {
   let href = ""
   let image = ""
 
