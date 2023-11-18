@@ -12,7 +12,7 @@ const Comments = () => {
 
   const session = useSession()
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateComment(e.target.value)
   }
 
@@ -21,7 +21,7 @@ const Comments = () => {
   const pathname = usePathname()
   const tweetId = pathname.split('/')[2]
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/comments`, {
       method: "POST",

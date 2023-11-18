@@ -1,6 +1,6 @@
 'use client'
 import { useSession } from 'next-auth/react'
-import React, { ButtonHTMLAttributes } from 'react'
+import React, { MouseEvent } from 'react'
 import { useState, useEffect } from 'react'
 
 interface LikeProps {
@@ -26,7 +26,7 @@ const LikeButton = (props: LikeProps) => {
   }, [])
 
 
-  const onClick = (e: any) => {
+  const onClick = () => {
     if (session.status !== "authenticated") return
     if (likeStatus.liked === false) {
       fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/like`, {

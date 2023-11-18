@@ -8,19 +8,19 @@ const UpdateUsername = () => {
   const [show, changeShow] = useState(false)
   const [newUsername, changeNewUsername] = useState('')
 
-  const showForm = (e: any) => {
+  const showForm = () => {
     changeShow(!show)
   }
 
-  const hideForm = (e: any) => {
+  const hideForm = () => {
     changeShow(!show)
   }
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     changeNewUsername(e.target.value)
   }
 
-  const onSubmit = (e: any) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/users`, {
       method: "PUT",

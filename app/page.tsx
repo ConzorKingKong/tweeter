@@ -23,11 +23,11 @@ export default function Home() {
   })
   }, [])
 
-  const onChange = (e: any) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostContent(e.target.value)
   }
 
-  const onSubmit = async (e: any) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const call = await fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/tweets`, {
       method: "POST",
