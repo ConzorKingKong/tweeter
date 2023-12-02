@@ -7,6 +7,7 @@ const UpdateUsername = () => {
   const router = useRouter()
   const [show, changeShow] = useState(false)
   const [newUsername, changeNewUsername] = useState('')
+  const [error, setError] = useState(false)
 
   const showForm = () => {
     changeShow(!show)
@@ -14,6 +15,8 @@ const UpdateUsername = () => {
 
   const hideForm = () => {
     changeShow(!show)
+    changeNewUsername('')
+    setError(false)
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,6 +30,11 @@ const UpdateUsername = () => {
       body: JSON.stringify({username: newUsername})
     })
     .then(res => {
+      if (!res.ok) {
+        // username already exists
+        setError(true)
+        return
+      }
       // redirect to new username page
       router.push(`/${newUsername}`)
     })
@@ -36,6 +44,7 @@ const UpdateUsername = () => {
 
   return (
     <div>
+      {error && <p>Username already exists</p>}
       {!show && <button onClick={showForm}>Edit username</button>}
       {show && <form onSubmit={onSubmit}><input value={newUsername} onChange={onChange} placeholder='Enter new username'/></form>}
       {show && <button onClick={hideForm}>Cancel</button>}
