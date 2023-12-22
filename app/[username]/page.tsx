@@ -32,17 +32,19 @@ const userPage = async ({ params: {username} }: Props) => {
   }
 
   return (
-    <div>
+    <div className="w-6/12">
       <div>
         <div>
-          <div className="flex flex-row">
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
-              <img src={user.image} />
+          <div className="flex flex-row justify-between">
+            <div className="flex items-center">
+              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                <div className="w-10 rounded-full">
+                  <img src={user.image} />
+                </div>
+              </label>
+              <p>{user.username}</p>
             </div>
-          </label>
-            <p>{user.username}</p>
-            {renderEdit && <UserMenu /> }
+            {renderEdit && <div><UserMenu /></div> }
           </div>
           {renderEdit && <UpdateUsername />}
         </div>

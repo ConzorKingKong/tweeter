@@ -36,17 +36,19 @@ const Tweet = (props: TweetProps | any) => {
   }
 
   return (
-    <div className="flex flex-col  border-solid border-2">
-      <div className='flex flex-row items-center'>
-        <Link href={href}>
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
-              <img src={image} />
-            </div>
-          </label>
-        </Link>
-        <Link href={href}>{props.tweet.User && props.tweet.User.username}</Link>
-        { props.tweet.User && <TweetMenu id={props.tweet.id} username={props.tweet.User.username || undefined} />}
+    <div className="flex flex-col border-solid border-2 rounded-lg my-3 p-2">
+      <div className="flex justify-between">
+        <div className='flex flex-row items-center'>
+          <Link href={href}>
+            <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+              <div className="w-10 rounded-full">
+                <img src={image} />
+              </div>
+            </label>
+          </Link>
+          <Link href={href}>{props.tweet.User && props.tweet.User.username}</Link>
+        </div>
+        { props.tweet.User && <div><TweetMenu id={props.tweet.id} username={props.tweet.User.username || undefined} /></div>}
       </div>
       <div>
         <Link className="flex flex-row" href={"/comments/" + props.tweet.id}> 

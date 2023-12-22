@@ -12,7 +12,7 @@ const Comments = () => {
 
   const session = useSession()
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     updateComment(e.target.value)
   }
 
@@ -50,15 +50,15 @@ const Comments = () => {
 
   if (tweet.render) {
     return (
-      <div>
+      <div className="w-6/12">
         <Tweet tweet={tweet.data} />
         {session.status === "authenticated" && <div>
           <form
           onSubmit={onSubmit}
-          className="flex"
+          className="flex flex-col"
           >
-            <input className="text-white w-full" onChange={onChange} value={comment} placeholder='Comment'/>
-            <button className="self-end">Post</button>
+            <textarea className="text-white w-full resize-none rounded-lg p-1" onChange={onChange} value={comment} placeholder='Comment' maxLength={191}/>
+            <button className="self-end w-2/12 border-solid border-2 rounded-lg p-0.5 mt-2">Post</button>
           </form>
         </div>}
         <div>

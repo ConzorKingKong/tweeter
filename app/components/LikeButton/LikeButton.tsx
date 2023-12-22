@@ -45,10 +45,12 @@ const LikeButton = (props: LikeProps) => {
     }
   }
 
+  const className = "border-solid border-2 rounded-lg p-0.5 mt-2"
+
   return (
     <div>
-      {likeStatus.liked === false && <button className="border-solid border-2" onClick={onClick}>Like {likeStatus.likes}</button>}
-      {likeStatus.liked === true && <button className="border-solid border-2" onClick={onClick}>Liked {likeStatus.likes}</button>}
+      {likeStatus.liked === false && <button className={className} onClick={onClick}>Like {likeStatus.likes}</button>}
+      {likeStatus.liked === true && <button className={className} onClick={onClick}>Liked {likeStatus.likes}</button>}
     </div>
   )
 }
