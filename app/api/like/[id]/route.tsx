@@ -4,28 +4,39 @@ import { authOptions } from "../../auth/[...nextauth]/route";
 import prisma from "@/prisma/client";
 import session from "@/app/interface/session";
 
-interface params {
+interface Params {
   params: {
-    id: string
-  }
+    id: string;
+  };
 }
 
-export async function GET(request: NextRequest, params: params) {
-  const session: session | null = await getServerSession(authOptions)
+export async function GET(request: NextRequest, params: Params) {
+  try {
+    const userSession: session | null = await getServerSession(authOptions)
 
-  if (session) {
+    if (!userSession) {
+      return NextResponse.json({ error: "Unauthorized" }, {status: 401})
+    }
+
     const dbCall = await prisma.likes.findUnique({
       where: {
         likerId_tweetId: {
           tweetId: params.params.id,
-          likerId: session.session.user.id
-        }
-      }
+          likerId: userSession.session.user.id,
+        },
+      },
     })
-  
+
+    if (!dbCall) {
+      return NextResponse.json({ error: "Resource not found" }, {status: 404})
+    }
+
     return NextResponse.json(dbCall)
+
+  } catch (e) {
+
+    console.error("Error in /like/[id] api route", e)
+
+    return NextResponse.json({ error: "Internal Server Error" }, {status: 500})
   }
-
-  return NextResponse.json({})
-
 }

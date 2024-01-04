@@ -5,31 +5,48 @@ import prisma from "@/prisma/client";
 import session from "@/app/interface/session";
 
 export async function POST(request: NextRequest) {
-  const body = await request.json()
+  try {
+    const body = await request.json()
+  
+    const session: session | null = await getServerSession(authOptions)
 
-  const session: session | null = await getServerSession(authOptions)
-
-  if (session) {
+    if (!session) {
+      return NextResponse.json({error: "Unauthorized"}, {status: 401})
+    }
+    
     const dbCall = await prisma.likes.create({
       data: {
         tweetId: body.id,
         likerId: session.session.user.id
       }
     })
+
+    if (!dbCall) {
+      return NextResponse.json({error: "Resource not found"}, {status: 404})
+    }
   
     return NextResponse.json(dbCall)
+    
   }
+  catch(e) {
 
-  return NextResponse.json({})
+    console.error("Error in /like api route POST", e)
+
+    return NextResponse.json({ error: "Internal Server Error" }, {status: 500})
+  }
 
 }
 
 export async function DELETE(request: NextRequest) {
-  const body = await request.json()
+  try {
+    const body = await request.json()
+  
+    const session: session | null = await getServerSession(authOptions)
 
-  const session: session | null = await getServerSession(authOptions)
-
-  if (session) {
+    if (!session) {
+      return NextResponse.json({error: "Unauthorized"}, {status: 401})
+    }
+    
     const dbCall = await prisma.likes.delete({
       where: {
         likerId_tweetId: {
@@ -38,10 +55,18 @@ export async function DELETE(request: NextRequest) {
         }
       }
     })
+
+    if (!dbCall) {
+      return NextResponse.json({error: "Resource not found"}, {status: 404})
+    }
   
     return NextResponse.json(dbCall)
+    
+  }
+  catch(e) {
+    console.error("Error in /like api route DELETE", e)
+    return NextResponse.json({ error: "Internal Server Error" }, {status: 500})
   }
 
-  return NextResponse.json({})
 
 }

@@ -4,15 +4,15 @@ import { authOptions } from "../auth/[...nextauth]/route";
 import prisma from "@/prisma/client";
 import session from "@/app/interface/session"
 
-export function GET(request: NextRequest) {
-  return NextResponse.json({})
-}
-
 export async function POST(request: NextRequest) {
-  const body = await request.json()
-  const session: session | null = await getServerSession(authOptions)
+  try {
+    const session: session | null = await getServerSession(authOptions)
+    const body = await request.json()
 
-  if (session) {
+    if (!session) {
+      return NextResponse.json({"error": "Unauthorized"}, {status: 401})
+    }
+  
     const comment = await prisma.tweets.create({
       data: {
         content: body.content,
@@ -22,8 +22,10 @@ export async function POST(request: NextRequest) {
     })
   
     return NextResponse.json(comment)
+    
+  } catch(e) {
+    console.error("POST error on /api/comments route", e)
+    return NextResponse.json({"error": "Internal service error"}, {status: 500})
   }
-
-  return NextResponse.json({})
 
 }
