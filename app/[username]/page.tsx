@@ -1,34 +1,36 @@
-import React from 'react'
-import Feed from '../components/Feed/Feed'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../api/auth/[...nextauth]/route'
-import UpdateUsername from '../components/UpdateUsername/page'
-import UserMenu from '../components/UserMenu/UserMenu'
+import React from 'react';
+import Feed from '../components/Feed/Feed';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]/options';
+import UpdateUsername from '../components/UpdateUsername/page';
+import UserMenu from '../components/UserMenu/UserMenu';
 
 interface Props {
-  params: {username: string}
+  params: { username: string };
 }
 
 interface session {
   session: {
     user: {
-      username: string
-    }
-  }
+      username: string;
+    };
+  };
 }
 
-const userPage = async ({ params: {username} }: Props) => {
-  const call = await fetch(`${process.env.HOSTNAME}/api/users/${username}`, {cache: 'no-store'})
-  const user = await call.json()
+const userPage = async ({ params: { username } }: Props) => {
+  const call = await fetch(`${process.env.HOSTNAME}/api/users/${username}`, {
+    cache: 'no-store',
+  });
+  const user = await call.json();
 
-  let renderEdit = false
+  let renderEdit = false;
 
-  const session: session | null = await getServerSession(authOptions)
+  const session: session | null = await getServerSession(authOptions);
 
   if (session === null) {
-    renderEdit = false
+    renderEdit = false;
   } else if (session && session.session.user.username === username) {
-    renderEdit = true
+    renderEdit = true;
   }
 
   return (
@@ -44,14 +46,18 @@ const userPage = async ({ params: {username} }: Props) => {
               </label>
               <p>{user.username}</p>
             </div>
-            {renderEdit && <div><UserMenu /></div> }
+            {renderEdit && (
+              <div>
+                <UserMenu />
+              </div>
+            )}
           </div>
           {renderEdit && <UpdateUsername />}
         </div>
         <Feed data={user.Tweets} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default userPage
+export default userPage;

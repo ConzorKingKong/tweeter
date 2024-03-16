@@ -1,6 +1,5 @@
 'use client'
-import React from 'react'
-import {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useSession } from 'next-auth/react'
 import Feed from './components/Feed/Feed'
 import { useRouter } from 'next/navigation'
