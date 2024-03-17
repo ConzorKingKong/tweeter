@@ -1,63 +1,64 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import Feed from '../components/Feed/Feed';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/options';
-import UpdateUsername from '../components/UpdateUsername/page';
 import UserMenu from '../components/UserMenu/UserMenu';
+import { useSession } from 'next-auth/react';
+import Modal from '../components/Modal/Modal';
+import { TweetProps } from '../components/Tweets/Tweets';
 
 interface Props {
   params: { username: string };
 }
 
-interface session {
-  session: {
-    user: {
-      username: string;
-    };
-  };
+interface User {
+  username: string;
+  image: string;
+  Tweets: TweetProps[];
 }
 
-const userPage = async ({ params: { username } }: Props) => {
-  const call = await fetch(`${process.env.HOSTNAME}/api/users/${username}`, {
-    cache: 'no-store',
-  });
-  const user = await call.json();
+const UserPage = ({ params: { username } }: Props) => {
+  const [user, setUser] = useState<User | null>(null);
+  const session = useSession();
 
-  let renderEdit = false;
-
-  const session: session | null = await getServerSession(authOptions);
-
-  if (session === null) {
-    renderEdit = false;
-  } else if (session && session.session.user.username === username) {
-    renderEdit = true;
-  }
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_HOSTNAME}/api/users/${username}`, {
+      cache: 'no-store',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setUser(data);
+      });
+  }, []);
 
   return (
     <div className="w-6/12">
-      <div>
+      <Modal />
+      {!user && <p>Loading...</p>}
+      {user && (
         <div>
-          <div className="flex flex-row justify-between">
-            <div className="flex items-center">
-              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full">
-                  <img src={user.image} />
-                </div>
-              </label>
-              <p>{user.username}</p>
-            </div>
-            {renderEdit && (
-              <div>
-                <UserMenu />
+          <div>
+            <div className="flex flex-row justify-between">
+              <div className="flex items-center">
+                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                  <div className="w-10 rounded-full">
+                    <img src={user.image} />
+                  </div>
+                </label>
+                <p>{user.username}</p>
               </div>
-            )}
+              {session.status === 'authenticated' &&
+                session.data.session.user.username === user.username && (
+                  <div>
+                    <UserMenu />
+                  </div>
+                )}
+            </div>
           </div>
-          {renderEdit && <UpdateUsername />}
+          <Feed data={user.Tweets} />
         </div>
-        <Feed data={user.Tweets} />
-      </div>
+      )}
     </div>
   );
 };
 
-export default userPage;
+export default UserPage;
