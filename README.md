@@ -20,8 +20,6 @@ NEXTAUTH_SECRET=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 
-## Deploy on Vercel
+## Deployed on Vercel
 
-The easiest way to deploy tweeter is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Check out a [live demo](https://tweeter-six-gray.vercel.app/)
